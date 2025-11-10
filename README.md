@@ -98,7 +98,7 @@ Permite curar múltiplas partes do corpo continuamente sem precisar iniciar a cu
 
 ## 🚀 Instalação
 
-1. Certifique-se de ter o BepInEx instalado no seu SPT
+1. Compilar o projeto
 2. Copie o arquivo `JeroManyMods.dll` para a pasta `BepInEx/plugins/`
 3. Inicie o jogo e configure as opções através do menu de configuração do BepInEx (F12 no menu principal)
 
@@ -164,6 +164,6 @@ Este projeto integra código de múltiplos mods com diferentes licenças. Por fa
 
 ---
 
-## Nota
+## Importante
 
 Este MOD não sera publicado e não havera disponibilização de Releases, foi feito apenas para uso pessoal e em tom de aprendizado.
