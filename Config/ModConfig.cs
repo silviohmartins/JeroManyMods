@@ -185,10 +185,9 @@ namespace JeroManyMods.Config
         public ConfigEntry<float> SpeedLimit { get; private set; }
         public ConfigEntry<bool> ReachableOnly { get; private set; }
         public ConfigEntry<bool> InventoryTabs { get; private set; }
-        public ConfigEntry<KeyboardShortcut> CancelHotkey { get; private set; }
-        public ConfigEntry<KeyboardShortcut> CancelHotkeyAlt { get; private set; }
-        public ConfigEntry<KeyboardShortcut> LoadAmmoHotkey { get; private set; }
         public ConfigEntry<bool> PrioritizeHighestPenetration { get; private set; }
+        public ConfigEntry<bool> QuickLoadNotify { get; private set; }
+        public ConfigEntry<KeyboardShortcut> QuickLoadHotkey { get; private set; }
 
         public ContinuousLoadAmmoConfig(ConfigFile config) : base(config)
         {
@@ -198,7 +197,7 @@ namespace JeroManyMods.Config
                 0.31f,
                 new ConfigDescription("The speed limit, as a percentage of the walk speed, set to the player while loading ammo",
                 new AcceptableValueRange<float>(0f, 1f),
-                tags: new global::ConfigurationManagerAttributes() { Order = 6, ShowRangeAsPercent = true }));
+                tags: new global::ConfigurationManagerAttributes() { Order = 5, ShowRangeAsPercent = true }));
 
             ReachableOnly = Config.Bind(
                 "5- ContinuousLoadAmmo",
@@ -206,7 +205,7 @@ namespace JeroManyMods.Config
                 true,
                 new ConfigDescription("Allow loading ammo outside the inventory only when Magazine and Ammo is in your Vest, Pockets, or Secure Container",
                 null,
-                tags: new global::ConfigurationManagerAttributes() { Order = 5 }));
+                tags: new global::ConfigurationManagerAttributes() { Order = 4 }));
 
             InventoryTabs = Config.Bind(
                 "5- ContinuousLoadAmmo",
@@ -214,37 +213,29 @@ namespace JeroManyMods.Config
                 true,
                 new ConfigDescription("Do not interrupt loading ammo when switching inventory tabs (maps tab, tasks tab, etc.)",
                 null,
-                tags: new global::ConfigurationManagerAttributes() { Order = 4 }));
-
-            CancelHotkey = Config.Bind(
-                "5- ContinuousLoadAmmo",
-                "Cancel Hotkey",
-                new KeyboardShortcut(UnityEngine.KeyCode.Mouse0),
-                new ConfigDescription("Key used to cancel loading ammo outside the inventory",
-                null,
                 tags: new global::ConfigurationManagerAttributes() { Order = 3 }));
 
-            CancelHotkeyAlt = Config.Bind(
+            QuickLoadHotkey = Config.Bind(
                 "5- ContinuousLoadAmmo",
-                "Cancel Hotkey Alt",
-                new KeyboardShortcut(UnityEngine.KeyCode.Mouse1),
-                new ConfigDescription("Key (alternative) used to cancel loading ammo outside the inventory",
-                null,
-                tags: new global::ConfigurationManagerAttributes() { Order = 2 }));
-
-            LoadAmmoHotkey = Config.Bind(
-                "5- ContinuousLoadAmmo",
-                "Load Ammo Hotkey",
+                "Quick Load Hotkey",
                 new KeyboardShortcut(UnityEngine.KeyCode.K),
                 new ConfigDescription("Key used to load ammo outside the inventory",
                 null,
-                tags: new global::ConfigurationManagerAttributes() { Order = 1 }));
+                tags: new global::ConfigurationManagerAttributes() { Order = 2 }));
 
             PrioritizeHighestPenetration = Config.Bind(
                 "5- ContinuousLoadAmmo",
                 "Prioritize Highest Penetration",
                 true,
-                new ConfigDescription("When using Load Ammo Hotkey, choose ammo that has the highest penetration power if Enabled. If Disabled, prioritize the same ammo in the weapon's magazine",
+                new ConfigDescription("When using Quick Load, choose ammo that has the highest penetration power. If Disabled, prioritize the same ammo in the weapon's magazine",
+                null,
+                tags: new global::ConfigurationManagerAttributes() { Order = 1 }));
+
+            QuickLoadNotify = Config.Bind(
+                "5- ContinuousLoadAmmo",
+                "Quick Load Notify",
+                true,
+                new ConfigDescription("When using Quick Load, notify the player of the ammo being loaded",
                 null,
                 tags: new global::ConfigurationManagerAttributes() { Order = 0 }));
         }

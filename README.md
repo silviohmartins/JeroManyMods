@@ -69,14 +69,24 @@ Permite carregar munição em pentes continuamente, mesmo fora do inventário, s
 - Limita a velocidade do jogador durante o carregamento
 - Suporta múltiplas abas do inventário sem interromper o carregamento
 
+**Funcionalidades Avançadas**:
+- **Quick Load**: Carregue munição rapidamente fora do inventário usando a hotkey
+- **Seletor de Munição**: Segure a hotkey e use a roda do mouse para escolher qual munição carregar
+- **Notificações**: Receba notificações sobre qual munição está sendo carregada (opcional)
+- **Compatibilidade MultiSelect**: Integração com UIFixes para carregar múltiplos pentes
+
 **Configurações**:
 - **Speed Limit**: Limite de velocidade durante o carregamento (padrão: 31% da velocidade de caminhada)
 - **Reachable Places Only**: Permite carregar apenas quando o pente e munição estão no colete, bolsos ou secure container
-- **Inventory Tabs**: Não interrompe o carregamento ao trocar de abas do inventário
-- **Load Ammo Hotkey**: Tecla para iniciar o carregamento (padrão: `K`)
-- **Cancel Hotkey**: Tecla para cancelar o carregamento (padrão: `Mouse0`)
-- **Cancel Hotkey Alt**: Tecla alternativa para cancelar (padrão: `Mouse1`)
-- **Prioritize Highest Penetration**: Prioriza munição com maior poder de penetração ao usar a hotkey
+- **Inventory Tabs**: Não interrompe o carregamento ao trocar de abas do inventário (mapas, tasks, etc.)
+- **Quick Load Hotkey**: Tecla para iniciar o carregamento rápido (padrão: `K`)
+- **Prioritize Highest Penetration**: Prioriza munição com maior poder de penetração ao usar Quick Load. Se desabilitado, prioriza a mesma munição do pente atual
+- **Quick Load Notify**: Exibe notificação quando usa Quick Load (padrão: `true`)
+
+**Controles**:
+- Pressione a **Quick Load Hotkey** para carregar automaticamente a melhor munição disponível
+- Segure a **Quick Load Hotkey** + **Roda do Mouse** para abrir o seletor de munição
+- **Mouse Buttons** (esquerdo/direito) ou **Atirar** cancelam o carregamento
 
 ---
 

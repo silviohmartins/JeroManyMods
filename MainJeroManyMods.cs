@@ -8,8 +8,8 @@ using EFT;
 using JeroManyMods.Config;
 using JeroManyMods.Managers;
 using JeroManyMods.Patches;
-using JeroManyMods.Patches.ContinuousLoadAmmo;
-using JeroManyMods.Patches.ContinuousLoadAmmo.Components;
+using JeroManyMods.Patches.ContinuousLoadAmmo.Patches;
+using ScreensPatches = JeroManyMods.Patches.ContinuousLoadAmmo.Patches.ScreensPatches;
 using JeroManyMods.Patches.TraderScrolling;
 using JeroManyMods.Patches.VisorEffectManager;
 using JeroManyMods.Patches.ContinuousHealing;
@@ -35,8 +35,6 @@ namespace JeroManyMods
         private InputManager _inputManager;
         private SkipperManager _skipperManager;
 
-        // ContinuousLoadAmmo
-        public static LoadAmmoUI LoadAmmoUI { get; private set; }
 
         /// <summary>
         /// Método chamado quando o plugin é carregado pelo BepInEx.
@@ -85,13 +83,9 @@ namespace JeroManyMods
             SpeedLimit = _continuousLoadAmmoConfig.SpeedLimit;
             ReachableOnly = _continuousLoadAmmoConfig.ReachableOnly;
             InventoryTabs = _continuousLoadAmmoConfig.InventoryTabs;
-            CancelHotkey = _continuousLoadAmmoConfig.CancelHotkey;
-            CancelHotkeyAlt = _continuousLoadAmmoConfig.CancelHotkeyAlt;
-            LoadAmmoHotkey = _continuousLoadAmmoConfig.LoadAmmoHotkey;
+            QuickLoadHotkey = _continuousLoadAmmoConfig.QuickLoadHotkey;
             PrioritizeHighestPenetration = _continuousLoadAmmoConfig.PrioritizeHighestPenetration;
-
-            // Inicializar LoadAmmoUI
-            LoadAmmoUI = new LoadAmmoUI();
+            QuickLoadNotify = _continuousLoadAmmoConfig.QuickLoadNotify;
 
             // ContinuousHealing
             HealLimbs = _continuousHealingConfig.HealLimbs;
@@ -128,10 +122,7 @@ namespace JeroManyMods
                 (new LoadMagazineStartPatch(), "LoadMagazineStartPatch (ContinuousLoadAmmo)"),
                 (new UnloadMagazineStartPatch(), "UnloadMagazineStartPatch (ContinuousLoadAmmo)"),
                 (new InventoryScreenClosePatch(), "InventoryScreenClosePatch (ContinuousLoadAmmo)"),
-                (new DestroyPatch(), "DestroyPatch (ContinuousLoadAmmo)"),
-                (new LocalGameStopPatch(), "LocalGameStopPatch (ContinuousLoadAmmo)"),
                 (new RegisterPlayerPatch(), "RegisterPlayerPatch (ContinuousLoadAmmo)"),
-                (new TranslateCommandPatch(), "TranslateCommandPatch (ContinuousLoadAmmo)"),
                 (new CH_StartHeal_Patch(), "CH_StartHeal_Patch (ContinuousHealing)"),
                 (new CH_EndHeal_Patch(), "CH_EndHeal_Patch (ContinuousHealing)"),
                 (new CH_CancelHeal_Patch(), "CH_CancelHeal_Patch (ContinuousHealing)")
@@ -176,10 +167,9 @@ namespace JeroManyMods
         internal static ConfigEntry<float> SpeedLimit { get; private set; }
         internal static ConfigEntry<bool> ReachableOnly { get; private set; }
         internal static ConfigEntry<bool> InventoryTabs { get; private set; }
-        internal static ConfigEntry<KeyboardShortcut> CancelHotkey { get; private set; }
-        internal static ConfigEntry<KeyboardShortcut> CancelHotkeyAlt { get; private set; }
-        internal static ConfigEntry<KeyboardShortcut> LoadAmmoHotkey { get; private set; }
+        internal static ConfigEntry<KeyboardShortcut> QuickLoadHotkey { get; private set; }
         internal static ConfigEntry<bool> PrioritizeHighestPenetration { get; private set; }
+        internal static ConfigEntry<bool> QuickLoadNotify { get; private set; }
 
         /// <summary>
         /// Verifica se o jogador está em uma raid.

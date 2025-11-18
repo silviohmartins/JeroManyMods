@@ -1,16 +1,17 @@
+using System.Reflection;
+using JeroManyMods;
+using JeroManyMods.Patches.ContinuousLoadAmmo.Utils;
 using EFT;
 using EFT.InventoryLogic;
 using EFT.UI;
 using EFT.UI.Map;
 using SPT.Reflection.Patching;
-using System.Reflection;
-using UIFixesInterop;
 
-namespace JeroManyMods.Patches.ContinuousLoadAmmo
+namespace JeroManyMods.Patches.ContinuousLoadAmmo.Patches
 {
     public static class ScreensPatches
     {
-        public static bool ToSkip;
+        private static bool _toSkip;
 
         public static void Enable()
         {
@@ -21,32 +22,30 @@ namespace JeroManyMods.Patches.ContinuousLoadAmmo
             new SkillsAndMasteringPatch().Enable();
             new StopProcessesPatch().Enable();
 
-            if (MultiSelect.StopLoadingMethod != null)
+            if (MultiSelectInterop.StopLoadingMethod != null)
             {
                 new MultiSelectStopLoadingPatch().Enable();
             }
         }
 
-        public static void Pre()
+        private static void Pre()
         {
             if (MainJeroManyMods.InventoryTabs.Value)
             {
-                ToSkip = true;
+                _toSkip = true;
             }
         }
 
-        public static void Post()
+        private static void Post()
         {
             if (MainJeroManyMods.InventoryTabs.Value)
             {
-                ToSkip = false;
+                _toSkip = false;
             }
         }
-    }
 
     public class TasksScreenShowPatch : ModulePatch
     {
-
         protected override MethodBase GetTargetMethod()
         {
             return typeof(TasksScreen).GetMethod(nameof(TasksScreen.Show));
@@ -55,13 +54,13 @@ namespace JeroManyMods.Patches.ContinuousLoadAmmo
         [PatchPrefix]
         protected static void Prefix()
         {
-            ScreensPatches.Pre();
+            Pre();
         }
 
         [PatchPostfix]
         protected static void Postfix()
         {
-            ScreensPatches.Post();
+            Post();
         }
     }
 
@@ -75,13 +74,13 @@ namespace JeroManyMods.Patches.ContinuousLoadAmmo
         [PatchPrefix]
         protected static void Prefix()
         {
-            ScreensPatches.Pre();
+            Pre();
         }
 
         [PatchPostfix]
         protected static void Postfix()
         {
-            ScreensPatches.Post();
+            Post();
         }
     }
 
@@ -95,19 +94,18 @@ namespace JeroManyMods.Patches.ContinuousLoadAmmo
         [PatchPrefix]
         protected static void Prefix()
         {
-            ScreensPatches.Pre();
+            Pre();
         }
 
         [PatchPostfix]
         protected static void Postfix()
         {
-            ScreensPatches.Post();
+            Post();
         }
     }
 
     public class PlayerModelPatch : ModulePatch
     {
-
         protected override MethodBase GetTargetMethod()
         {
             return typeof(InventoryPlayerModelWithStatsWindow).GetMethod(nameof(InventoryPlayerModelWithStatsWindow.Show), [typeof(GInterface214), typeof(int), typeof(EMemberCategory), typeof(ProfileStats), typeof(LastPlayerStateClass), typeof(InventoryController), typeof(bool)]);
@@ -116,19 +114,18 @@ namespace JeroManyMods.Patches.ContinuousLoadAmmo
         [PatchPrefix]
         protected static void Prefix()
         {
-            ScreensPatches.Pre();
+            Pre();
         }
 
         [PatchPostfix]
         protected static void Postfix()
         {
-            ScreensPatches.Post();
+            Post();
         }
     }
 
     public class SkillsAndMasteringPatch : ModulePatch
     {
-
         protected override MethodBase GetTargetMethod()
         {
             return typeof(SkillsAndMasteringScreen).GetMethod(nameof(SkillsAndMasteringScreen.Show));
@@ -137,57 +134,58 @@ namespace JeroManyMods.Patches.ContinuousLoadAmmo
         [PatchPrefix]
         protected static void Prefix()
         {
-            ScreensPatches.Pre();
+            Pre();
         }
 
         [PatchPostfix]
         protected static void Postfix()
         {
-            ScreensPatches.Post();
+            Post();
         }
     }
 
-    /// <summary>
-    /// Skip StopProcesses when called from Screens.
-    /// Other option: Get callstack and identify caller to skip StopProcesses
-    /// </summary>
-    public class StopProcessesPatch : ModulePatch
-    {
-        protected override MethodBase GetTargetMethod()
+        /// <summary>
+        /// Skip StopProcesses when called from Screens
+        /// </summary>
+        public class StopProcessesPatch : ModulePatch
         {
-            return typeof(Player.PlayerInventoryController).GetMethod(nameof(Player.PlayerInventoryController.StopProcesses));
-        }
-
-        [PatchPrefix]
-        protected static bool Prefix()
-        {
-            if (ScreensPatches.ToSkip)
+            protected override MethodBase GetTargetMethod()
             {
-                return false;
+                return typeof(Player.PlayerInventoryController).GetMethod(nameof(Player.PlayerInventoryController.StopProcesses));
             }
-            return true;
-        }
-    }
 
-    /// <summary>
-    /// MultiSelect patches StopProcesses to run MultiSelect.StopLoading.
-    /// Even if StopProcesses is skipped, MultiSelect's patch still runs to call StopLoading
-    /// </summary>
-    public class MultiSelectStopLoadingPatch : ModulePatch
-    {
-        protected override MethodBase GetTargetMethod()
-        {
-            return MultiSelect.StopLoadingMethod;
-        }
-
-        [PatchPrefix]
-        protected static bool Prefix()
-        {
-            if (ScreensPatches.ToSkip)
+            [PatchPrefix]
+            protected static bool Prefix()
             {
-                return false;
+                if (_toSkip)
+                {
+                    return false;
+                }
+                return true;
             }
-            return true;
+        }
+
+        /// <summary>
+        /// MultiSelect patches StopProcesses to run MultiSelect.StopLoading.
+        /// Even if StopProcesses is skipped, MultiSelect's patch still runs to call StopLoading
+        /// </summary>
+        [IgnoreAutoPatch]
+        public class MultiSelectStopLoadingPatch : ModulePatch
+        {
+            protected override MethodBase GetTargetMethod()
+            {
+                return MultiSelectInterop.StopLoadingMethod;
+            }
+
+            [PatchPrefix]
+            protected static bool Prefix()
+            {
+                if (_toSkip)
+                {
+                    return false;
+                }
+                return true;
+            }
         }
     }
 }

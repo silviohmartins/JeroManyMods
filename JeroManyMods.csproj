@@ -13,7 +13,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<TarkovDir Condition=" '$(TarkovDir)' == '' ">D:\GAMES\SPT-4.0.2_MODDING\</TarkovDir>
+		<TarkovDir Condition=" '$(TarkovDir)' == '' ">D:\GAMES\SPT-4.0.x_MODDING\</TarkovDir>
 		<TarkovPluginsSPTDir>$(TarkovDir)BepInEx\plugins\spt\</TarkovPluginsSPTDir>
 		<TarkovManagedDir>$(TarkovDir)EscapeFromTarkov_Data\Managed\</TarkovManagedDir>
 		<TarkovBepInExCoreDir>$(TarkovDir)BepInEx\core\</TarkovBepInExCoreDir>
