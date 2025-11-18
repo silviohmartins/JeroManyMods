@@ -21,6 +21,7 @@ namespace JeroManyMods
     public class MainJeroManyMods : BaseUnityPlugin
     {
         internal new static ManualLogSource Logger { get; private set; }
+        internal new static ConfigFile Config { get; private set; }
 
         // Configurações
         private EasyModeConfig _easyModeConfig;
@@ -43,6 +44,7 @@ namespace JeroManyMods
         public void Awake()
         {
             Logger = base.Logger;
+            Config = base.Config;
             
             // Inicializar configurações
             InitializeConfigurations();

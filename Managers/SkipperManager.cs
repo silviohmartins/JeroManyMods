@@ -45,15 +45,25 @@ namespace JeroManyMods.Managers
                 return;
             }
 
-            if (_config.DisplayHotkey.Value.IsDown())
+            // Verifica se a hotkey está sendo pressionada usando Input.GetKey do Unity
+            // Isso funciona mesmo quando o inventário/menu está aberto
+            // Usa Input.GetKey em vez de KeyboardShortcut.IsPressed() para garantir compatibilidade
+            bool isHotkeyPressed = Input.GetKey(_config.DisplayHotkey.Value.MainKey);
+            
+            // Verifica se há mods pressionados (Ctrl, Alt, Shift)
+            if (_config.DisplayHotkey.Value.Modifiers != null)
             {
-                ChangeButtonVisibility(true);
+                foreach (var modifier in _config.DisplayHotkey.Value.Modifiers)
+                {
+                    if (!Input.GetKey(modifier))
+                    {
+                        isHotkeyPressed = false;
+                        break;
+                    }
+                }
             }
-
-            if (_config.DisplayHotkey.Value.IsUp())
-            {
-                ChangeButtonVisibility(false);
-            }
+            
+            ChangeButtonVisibility(isHotkeyPressed);
         }
 
         /// <summary>
@@ -62,11 +72,24 @@ namespace JeroManyMods.Managers
         /// <param name="setVisibilityTo">True para mostrar, False para esconder</param>
         private void ChangeButtonVisibility(bool setVisibilityTo)
         {
+            if (QuestObjectiveViewPatch.LastSeenObjectivesBlock == null)
+            {
+                return;
+            }
+
             foreach (var button in QuestObjectiveViewPatch.LastSeenObjectivesBlock.GetComponentsInChildren<DefaultUIButton>(includeInactive: true))
             {
-                if (button.name != SkipButtonName) continue;
+                if (button == null || button.name != SkipButtonName) continue;
 
-                button.gameObject.SetActive(setVisibilityTo);
+                // Só mostra o botão se setVisibilityTo for true e o botão existir
+                if (setVisibilityTo)
+                {
+                    button.gameObject.SetActive(true);
+                }
+                else
+                {
+                    button.gameObject.SetActive(false);
+                }
             }
         }
     }

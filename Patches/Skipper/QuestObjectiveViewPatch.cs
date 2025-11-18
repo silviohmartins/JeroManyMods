@@ -6,6 +6,7 @@ using EFT.Quests;
 using EFT.UI;
 using HarmonyLib;
 using JetBrains.Annotations;
+using JeroManyMods.Config;
 using UnityEngine;
 
 
@@ -51,6 +52,15 @@ namespace JeroManyMods.Patches
             }
 
             LastSeenObjectivesBlock = __instance.transform.parent.gameObject;
+
+            // Adiciona o componente de hotkey se ainda não existir
+            var existingComponent = LastSeenObjectivesBlock.GetComponent<SkipperHotkeyComponent>();
+            if (existingComponent == null)
+            {
+                var hotkeyComponent = LastSeenObjectivesBlock.AddComponent<SkipperHotkeyComponent>();
+                var skipperConfig = new SkipperConfig(MainJeroManyMods.Config);
+                hotkeyComponent.Initialize(skipperConfig);
+            }
 
             var skipButton = Object.Instantiate(____handoverButton, ____handoverButton.transform.parent.transform);
 
