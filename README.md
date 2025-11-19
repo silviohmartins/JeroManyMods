@@ -106,6 +106,18 @@ Permite curar múltiplas partes do corpo continuamente sem precisar iniciar a cu
 
 ---
 
+### 7. HideUI
+
+Remove elementos UI do menu do jogo para uma interface mais limpa.
+
+**Funcionalidades**:
+- Remove o aviso Alpha/Beta do menu principal
+
+**Configurações**:
+- **Hide Beta Warning**: Remove o aviso Alpha/Beta do menu principal (padrão: `true`)
+
+---
+
 ## 🚀 Instalação
 
 1. Compilar o projeto
