@@ -14,6 +14,7 @@ using JeroManyMods.Patches.TraderScrolling;
 using JeroManyMods.Patches.VisorEffectManager;
 using JeroManyMods.Patches.ContinuousHealing;
 using JeroManyMods.Patches.HideUI.Patches;
+using JeroManyMods.Patches.LootHighlighter.Patches;
 
 namespace JeroManyMods
 {
@@ -23,6 +24,7 @@ namespace JeroManyMods
     {
         internal new static ManualLogSource Logger { get; private set; }
         internal new static ConfigFile Config { get; private set; }
+        internal static LootHighlighterConfig ConfigInstance { get; private set; }
 
         // Configurações
         private EasyModeConfig _easyModeConfig;
@@ -32,6 +34,7 @@ namespace JeroManyMods
         private ContinuousLoadAmmoConfig _continuousLoadAmmoConfig;
         private ContinuousHealingConfig _continuousHealingConfig;
         private HideUIConfig _hideUIConfig;
+        private LootHighlighterConfig _lootHighlighterConfig;
 
         // Managers
         private PatchManager _patchManager;
@@ -67,6 +70,8 @@ namespace JeroManyMods
             _continuousLoadAmmoConfig = new ContinuousLoadAmmoConfig(Config);
             _continuousHealingConfig = new ContinuousHealingConfig(Config);
             _hideUIConfig = new HideUIConfig(Config);
+            _lootHighlighterConfig = new LootHighlighterConfig(Config);
+            ConfigInstance = _lootHighlighterConfig;
 
             // Manter compatibilidade com código existente (propriedades estáticas)
             EnvironmentEnjoyer = _easyModeConfig.EnvironmentEnjoyer;
@@ -134,7 +139,8 @@ namespace JeroManyMods
                 (new CH_StartHeal_Patch(), "CH_StartHeal_Patch (ContinuousHealing)"),
                 (new CH_EndHeal_Patch(), "CH_EndHeal_Patch (ContinuousHealing)"),
                 (new CH_CancelHeal_Patch(), "CH_CancelHeal_Patch (ContinuousHealing)"),
-                (new HideBetaPatch(), "HideBetaPatch (HideUI)")
+                (new HideBetaPatch(), "HideBetaPatch (HideUI)"),
+                (new GameWorldPatch(), "GameWorldPatch (LootHighlighter)")
             );
 
             // Habilitar ScreensPatches (método estático)

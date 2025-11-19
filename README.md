@@ -118,6 +118,40 @@ Remove elementos UI do menu do jogo para uma interface mais limpa.
 
 ---
 
+### 8. LootHighlighter
+
+Destaca visualmente itens, containers e corpos próximos ao jogador, facilitando a localização de loot durante as raids.
+
+**Funcionalidades**:
+- Destaca itens soltos no chão
+- Destaca containers (baús, mochilas, gavetas, etc.)
+- Destaca corpos de jogadores/PMCs
+- Sistema de cores baseado em raridade para itens
+- Labels de texto opcionais com informações do loot
+- Luzes de highlight para melhor visibilidade
+- Toggle on/off durante a raid com hotkey
+
+**Configurações**:
+- **Enable Mod**: Ativa/desativa o mod globalmente (padrão: `true`)
+- **Toggle Keyboard Shortcut**: Tecla para alternar o highlight durante a raid (padrão: `F1`)
+- **Detection Radius**: Raio de detecção em metros (padrão: `10m`, range: 5-30m)
+- **Check Interval**: Intervalo entre verificações de loot em segundos (padrão: `0.5s`, range: 0.1-2.0s)
+- **Show Text Labels**: Exibe labels de texto nos itens destacados (padrão: `true`)
+- **Show Distance in Label**: Mostra a distância até o loot no label (padrão: `false`)
+- **Show Items**: Destaca itens soltos (padrão: `true`)
+- **Show Containers**: Destaca containers (padrão: `true`)
+- **Show Corpses**: Destaca corpos (padrão: `true`)
+- **Items Color**: Cor para highlights de itens (padrão: Vermelho)
+- **Containers Color**: Cor para highlights de containers (padrão: Verde)
+- **Corpses Color**: Cor para highlights de corpos (padrão: Amarelo)
+
+**Notas**:
+- O sistema de cores de raridade sobrescreve a cor configurada para itens baseado no template ID
+- Itens raros/ultra raros são destacados em cores especiais (roxo, amarelo, ciano)
+- Os highlights são limpos automaticamente quando os objetos saem do raio de detecção
+
+---
+
 ## 🚀 Instalação
 
 1. Compilar o projeto
@@ -177,6 +211,14 @@ Este mod integra funcionalidades baseadas nos seguintes mods originais:
 - **Repositório**: [silviohmartins/VisorEffectManager](https://github.com/silviohmartins/VisorEffectManager)
 - **Licença**: MIT License - Copyright (c) 2025 silviohmartins
 - **Forge**: [VisorEffectManager](https://forge.sp-tarkov.com/mod/2429/visoreffectmanager)
+
+### LootHighlighter
+- **Autor**: karmaMGL (original), flir063 (atualização)
+- **Repositório**: 
+  - [karmaMGL/EFT-SPT-mod-3.11-loot-highligher-source-code](https://github.com/karmaMGL/EFT-SPT-mod-3.11-loot-highligher-source-code) (original SPT 3.11)
+  - [flir063-spt/avatarLootHighlighter](https://gitlab.com/flir063-spt/loothighlighter) (atualização SPT 4.0)
+- **Licença**: Boost Software License
+- **Forge**: [Loot Highlighter](https://forge.sp-tarkov.com/mod/2136/loot-highlighter)
 
 ---
 

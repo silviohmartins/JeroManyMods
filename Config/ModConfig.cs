@@ -1,5 +1,6 @@
 using BepInEx.Configuration;
 using JeroManyMods.Patches.ContinuousLoadAmmo.Components;
+using UnityEngine;
 
 namespace JeroManyMods.Config
 {
@@ -295,6 +296,123 @@ namespace JeroManyMods.Config
                 true,
                 new ConfigDescription("Hide the Alpha/Beta warning message in the main menu",
                 tags: new global::ConfigurationManagerAttributes() { Order = 1 }));
+        }
+    }
+
+    /// <summary>
+    /// Configurações do LootHighlighter.
+    /// Gerencia todas as configurações do mod de highlight de loot.
+    /// </summary>
+    public class LootHighlighterConfig : ModConfig
+    {
+        // Main Settings
+        public ConfigEntry<bool> EnabledPlugin { get; private set; }
+        public ConfigEntry<KeyboardShortcut> ToggleKeyboardShortcut { get; private set; }
+        public ConfigEntry<float> DetectionRadius { get; private set; }
+        public ConfigEntry<float> CheckInterval { get; private set; }
+        public ConfigEntry<bool> ShowTextLabels { get; private set; }
+        public ConfigEntry<bool> ShowDistanceInLabel { get; private set; }
+
+        // Category Settings
+        public ConfigEntry<bool> ShowItems { get; private set; }
+        public ConfigEntry<bool> ShowContainers { get; private set; }
+        public ConfigEntry<bool> ShowCorpses { get; private set; }
+
+        // Color Settings
+        public ConfigEntry<Color> ItemsColor { get; private set; }
+        public ConfigEntry<Color> ContainersColor { get; private set; }
+        public ConfigEntry<Color> CorpsesColor { get; private set; }
+
+        public LootHighlighterConfig(ConfigFile config) : base(config)
+        {
+            // Main Settings
+            EnabledPlugin = Config.Bind(
+                "8- LootHighlighter",
+                "Enable Mod",
+                true,
+                new ConfigDescription("Enable the loot highlighter plugin",
+                tags: new global::ConfigurationManagerAttributes { Order = 10 }));
+
+            ToggleKeyboardShortcut = Config.Bind(
+                "8- LootHighlighter",
+                "Toggle Keyboard Shortcut",
+                new KeyboardShortcut(KeyCode.F1),
+                new ConfigDescription("Keyboard shortcut to toggle loot highlighting",
+                tags: new global::ConfigurationManagerAttributes { Order = 9 }));
+
+            DetectionRadius = Config.Bind(
+                "8- LootHighlighter",
+                "Detection Radius",
+                10f,
+                new ConfigDescription("Radius in meters to detect loot",
+                new AcceptableValueRange<float>(5f, 30f),
+                tags: new global::ConfigurationManagerAttributes { Order = 8 }));
+
+            CheckInterval = Config.Bind(
+                "8- LootHighlighter",
+                "Check Interval",
+                0.5f,
+                new ConfigDescription("How often to check for loot (in seconds)",
+                new AcceptableValueRange<float>(0.1f, 2.0f),
+                tags: new global::ConfigurationManagerAttributes { Order = 7 }));
+
+            ShowTextLabels = Config.Bind(
+                "8- LootHighlighter",
+                "Show Text Labels",
+                true,
+                new ConfigDescription("Show text labels on highlighted loot (light will still be shown)",
+                tags: new global::ConfigurationManagerAttributes { Order = 6 }));
+
+            ShowDistanceInLabel = Config.Bind(
+                "8- LootHighlighter",
+                "Show Distance in Label",
+                false,
+                new ConfigDescription("Show distance to loot in the label (only when text labels are enabled)",
+                tags: new global::ConfigurationManagerAttributes { Order = 5 }));
+
+            // Category Settings
+            ShowItems = Config.Bind(
+                "8- LootHighlighter",
+                "Show Items",
+                true,
+                new ConfigDescription("Highlight loose items",
+                tags: new global::ConfigurationManagerAttributes { Order = 3 }));
+
+            ShowContainers = Config.Bind(
+                "8- LootHighlighter",
+                "Show Containers",
+                true,
+                new ConfigDescription("Highlight containers",
+                tags: new global::ConfigurationManagerAttributes { Order = 2 }));
+
+            ShowCorpses = Config.Bind(
+                "8- LootHighlighter",
+                "Show Corpses",
+                true,
+                new ConfigDescription("Highlight corpses",
+                tags: new global::ConfigurationManagerAttributes { Order = 1 }));
+
+            // Color Settings
+            ItemsColor = Config.Bind(
+                "8- LootHighlighter",
+                "Items Color",
+                Color.red,
+                new ConfigDescription("Color for item highlights",
+                tags: new global::ConfigurationManagerAttributes { Order = 3 }));
+
+            ContainersColor = Config.Bind(
+                "8- LootHighlighter",
+                "Containers Color",
+                Color.green,
+                new ConfigDescription("Color for container highlights",
+                tags: new global::ConfigurationManagerAttributes { Order = 2 }));
+
+            CorpsesColor = Config.Bind(
+                "8- LootHighlighter",
+                "Corpses Color",
+                Color.yellow,
+                new ConfigDescription("Color for corpse highlights",
+                tags: new global::ConfigurationManagerAttributes { Order = 1 }));
         }
     }
 }

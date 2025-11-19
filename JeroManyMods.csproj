@@ -83,6 +83,10 @@
 			<HintPath>$(TarkovManagedDir)UnityEngine.InputLegacyModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
+		<Reference Include="UnityEngine.TextRenderingModule">
+			<HintPath>$(TarkovManagedDir)UnityEngine.TextRenderingModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
 		<Reference Include="PhysicsModule">
 			<HintPath>$(TarkovManagedDir)UnityEngine.PhysicsModule.dll</HintPath>
 		</Reference>
