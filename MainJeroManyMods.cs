@@ -13,6 +13,7 @@ using ScreensPatches = JeroManyMods.Patches.ContinuousLoadAmmo.Patches.ScreensPa
 using JeroManyMods.Patches.TraderScrolling;
 using JeroManyMods.Patches.VisorEffectManager;
 using JeroManyMods.Patches.ContinuousHealing;
+using JeroManyMods.Patches.HideUI.Patches;
 
 namespace JeroManyMods
 {
@@ -30,6 +31,7 @@ namespace JeroManyMods
         private VisorEffectManagerConfig _visorEffectManagerConfig;
         private ContinuousLoadAmmoConfig _continuousLoadAmmoConfig;
         private ContinuousHealingConfig _continuousHealingConfig;
+        private HideUIConfig _hideUIConfig;
 
         // Managers
         private PatchManager _patchManager;
@@ -64,6 +66,7 @@ namespace JeroManyMods
             _visorEffectManagerConfig = new VisorEffectManagerConfig(Config);
             _continuousLoadAmmoConfig = new ContinuousLoadAmmoConfig(Config);
             _continuousHealingConfig = new ContinuousHealingConfig(Config);
+            _hideUIConfig = new HideUIConfig(Config);
 
             // Manter compatibilidade com código existente (propriedades estáticas)
             EnvironmentEnjoyer = _easyModeConfig.EnvironmentEnjoyer;
@@ -93,6 +96,9 @@ namespace JeroManyMods
             HealLimbs = _continuousHealingConfig.HealLimbs;
             HealDelay = _continuousHealingConfig.HealDelay;
             ResetAnimation = _continuousHealingConfig.ResetAnimation;
+
+            // HideUI
+            HideBetaWarning = _hideUIConfig.HideBetaWarning;
         }
 
         /// <summary>
@@ -127,7 +133,8 @@ namespace JeroManyMods
                 (new RegisterPlayerPatch(), "RegisterPlayerPatch (ContinuousLoadAmmo)"),
                 (new CH_StartHeal_Patch(), "CH_StartHeal_Patch (ContinuousHealing)"),
                 (new CH_EndHeal_Patch(), "CH_EndHeal_Patch (ContinuousHealing)"),
-                (new CH_CancelHeal_Patch(), "CH_CancelHeal_Patch (ContinuousHealing)")
+                (new CH_CancelHeal_Patch(), "CH_CancelHeal_Patch (ContinuousHealing)"),
+                (new HideBetaPatch(), "HideBetaPatch (HideUI)")
             );
 
             // Habilitar ScreensPatches (método estático)
@@ -181,7 +188,10 @@ namespace JeroManyMods
         // ContinuousHealing - Propriedades estáticas para compatibilidade
         public static ConfigEntry<bool> HealLimbs { get; set; }
         public static ConfigEntry<int> HealDelay { get; set; }
-        public static ConfigEntry<bool> ResetAnimation { get; set; }        
+        public static ConfigEntry<bool> ResetAnimation { get; set; }
+
+        // HideUI - Propriedades estáticas para compatibilidade
+        internal static ConfigEntry<bool> HideBetaWarning { get; private set; }
 
     }
 }

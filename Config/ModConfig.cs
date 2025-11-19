@@ -278,5 +278,24 @@ namespace JeroManyMods.Config
                 tags: new global::ConfigurationManagerAttributes() { Order = 1 }));
         }
     }
+
+    /// <summary>
+    /// Configurações do HideUI.
+    /// Gerencia as configurações do mod que permite remover elementos UI do menu do jogo.
+    /// </summary>
+    public class HideUIConfig : ModConfig
+    {
+        public ConfigEntry<bool> HideBetaWarning { get; private set; }
+
+        public HideUIConfig(ConfigFile config) : base(config)
+        {
+            HideBetaWarning = Config.Bind(
+                "7- HideUI",
+                "Hide Beta Warning",
+                true,
+                new ConfigDescription("Hide the Alpha/Beta warning message in the main menu",
+                tags: new global::ConfigurationManagerAttributes() { Order = 1 }));
+        }
+    }
 }
 
