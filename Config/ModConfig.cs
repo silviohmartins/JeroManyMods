@@ -415,5 +415,24 @@ namespace JeroManyMods.Config
                 tags: new global::ConfigurationManagerAttributes { Order = 1 }));
         }
     }
+
+    /// <summary>
+    /// Configurações do HealingAutoCancel.
+    /// Gerencia as configurações do mod que cancela automaticamente a cura quando a parte do corpo está totalmente curada.
+    /// </summary>
+    public class HealingAutoCancelConfig : ModConfig
+    {
+        public ConfigEntry<bool> EnableAutoHealCanceling { get; private set; }
+
+        public HealingAutoCancelConfig(ConfigFile config) : base(config)
+        {
+            EnableAutoHealCanceling = Config.Bind(
+                "9- HealingAutoCancel",
+                "Enable automatic heal canceling",
+                true,
+                new ConfigDescription("Automatically cancels applied med kits when the body part is at full health and is not bleeding or broken.",
+                tags: new global::ConfigurationManagerAttributes { Order = 1 }));
+        }
+    }
 }
 

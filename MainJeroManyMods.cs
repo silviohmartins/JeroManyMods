@@ -14,7 +14,8 @@ using JeroManyMods.Patches.TraderScrolling;
 using JeroManyMods.Patches.VisorEffectManager;
 using JeroManyMods.Patches.ContinuousHealing;
 using JeroManyMods.Patches.HideUI.Patches;
-using JeroManyMods.Patches.LootHighlighter.Patches;
+using LootHighlighterPatches = JeroManyMods.Patches.LootHighlighter.Patches;
+using HealingAutoCancelPatches = JeroManyMods.Patches.HealingAutoCancel.Patches;
 
 namespace JeroManyMods
 {
@@ -35,6 +36,7 @@ namespace JeroManyMods
         private ContinuousHealingConfig _continuousHealingConfig;
         private HideUIConfig _hideUIConfig;
         private LootHighlighterConfig _lootHighlighterConfig;
+        private HealingAutoCancelConfig _healingAutoCancelConfig;
 
         // Managers
         private PatchManager _patchManager;
@@ -71,6 +73,7 @@ namespace JeroManyMods
             _continuousHealingConfig = new ContinuousHealingConfig(Config);
             _hideUIConfig = new HideUIConfig(Config);
             _lootHighlighterConfig = new LootHighlighterConfig(Config);
+            _healingAutoCancelConfig = new HealingAutoCancelConfig(Config);
             ConfigInstance = _lootHighlighterConfig;
 
             // Manter compatibilidade com código existente (propriedades estáticas)
@@ -126,6 +129,9 @@ namespace JeroManyMods
         /// </summary>
         private void EnablePatches()
         {
+            // Inicializar HealingAutoCancel patch com configuração
+            HealingAutoCancelPatches.GameWorldPatch.Initialize(_healingAutoCancelConfig);
+
             _patchManager.EnablePatches(
                 (new ManyModsPatch(), "ManyModsPatch (Easy Mode)"),
                 (new QuestObjectiveViewPatch(), "QuestObjectiveViewPatch (Skipper)"),
@@ -140,7 +146,8 @@ namespace JeroManyMods
                 (new CH_EndHeal_Patch(), "CH_EndHeal_Patch (ContinuousHealing)"),
                 (new CH_CancelHeal_Patch(), "CH_CancelHeal_Patch (ContinuousHealing)"),
                 (new HideBetaPatch(), "HideBetaPatch (HideUI)"),
-                (new GameWorldPatch(), "GameWorldPatch (LootHighlighter)")
+                (new LootHighlighterPatches.GameWorldPatch(), "GameWorldPatch (LootHighlighter)"),
+                (new HealingAutoCancelPatches.GameWorldPatch(), "GameWorldPatch (HealingAutoCancel)")
             );
 
             // Habilitar ScreensPatches (método estático)

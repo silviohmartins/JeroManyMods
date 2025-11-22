@@ -152,6 +152,26 @@ Destaca visualmente itens, containers e corpos próximos ao jogador, facilitando
 
 ---
 
+### 9. HealingAutoCancel
+
+Cancela automaticamente kits médicos aplicados quando a parte do corpo está totalmente curada e não está sangrando ou quebrada.
+
+**Funcionalidades**:
+- Cancela automaticamente a cura quando a parte do corpo atinge a saúde máxima
+- Não cancela quando há sangramento ativo
+- Não cancela quando está consertando um membro quebrado
+- Funciona perfeitamente em conjunto com Continuous Healing
+
+**Configurações**:
+- **Enable automatic heal canceling**: Ativa/desativa o cancelamento automático de cura (padrão: `true`)
+
+**Notas**:
+- Altamente recomendado usar em conjunto com Continuous Healing para melhor experiência
+- O mod cancela a cura apenas quando seguro fazê-lo (sem sangramento, sem membro quebrado)
+- Quando o kit médico está esgotado, a cura também é cancelada automaticamente
+
+---
+
 ## 🚀 Instalação
 
 1. Compilar o projeto
@@ -219,6 +239,12 @@ Este mod integra funcionalidades baseadas nos seguintes mods originais:
   - [flir063-spt/avatarLootHighlighter](https://gitlab.com/flir063-spt/loothighlighter) (atualização SPT 4.0)
 - **Licença**: Boost Software License
 - **Forge**: [Loot Highlighter](https://forge.sp-tarkov.com/mod/2136/loot-highlighter)
+
+### HealingAutoCancel
+- **Autor**: minihazel
+- **Repositório**: [minihazel/HealingAutoCancel](https://github.com/minihazel/HealingAutoCancel)
+- **Licença**: MIT License
+- **Forge**: [Healing Autocancel](https://forge.sp-tarkov.com/mod/1274/healing-autocancel)
 
 ---
 
