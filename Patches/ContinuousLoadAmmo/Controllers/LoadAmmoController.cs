@@ -17,6 +17,7 @@ namespace JeroManyMods.Patches.ContinuousLoadAmmo.Controllers
         private readonly Player _player;
         private MagazineItemClass _magazine;
         private bool _isReachable = true;
+        private bool _isRestoringState = false;
 
         public event Action<float, int, int> OnStartLoading;
         public event Action<Item> OnCloseInventoryLoading;
@@ -227,6 +228,21 @@ namespace JeroManyMods.Patches.ContinuousLoadAmmo.Controllers
         public void Dispose()
         {
             PlayerInventoryController.StopProcesses();
+            
+            // Garantir que o estado de corrida seja sempre restaurado ao destruir o controller
+            if (_player != null && _player.MovementContext != null)
+            {
+                try
+                {
+                    _player.MovementContext.SetPhysicalCondition(EPhysicalCondition.SprintDisabled, false);
+                    _player.MovementContext.RemoveStateSpeedLimit(ESpeedLimit.BarbedWire);
+                }
+                catch
+                {
+                    // Ignorar erros durante dispose (player pode já ter sido destruído)
+                }
+            }
+            
             if (PlayerInventoryController != null)
             {
                 PlayerInventoryController.ActiveEventAdded -= LoadingStart;
@@ -300,22 +316,40 @@ namespace JeroManyMods.Patches.ContinuousLoadAmmo.Controllers
                 _player.TrySaveLastItemInHands();
                 _player.SetEmptyHands(null);
                 _player.MovementContext.ChangeSpeedLimit(MainJeroManyMods.SpeedLimit.Value, ESpeedLimit.BarbedWire);
+                _player.MovementContext.SetPhysicalCondition(EPhysicalCondition.SprintDisabled, true);
             }
             else
             {
-                // Timing delay
-                await Task.Delay(800);
+                // Evitar múltiplas chamadas simultâneas
+                if (_isRestoringState) return;
+                _isRestoringState = true;
 
-                // Check for active MultiSelect load/unload
-                if (MultiSelectInterop.IsMultiSelectLoadSerializerActive) return;
-
-                if (_player.HandsIsEmpty)
+                try
                 {
-                    _player.TrySetLastEquippedWeapon();
+                    // Timing delay
+                    await Task.Delay(800);
+
+                    // SEMPRE restaurar o estado de corrida primeiro, mesmo se MultiSelect estiver ativo
+                    _player.MovementContext.SetPhysicalCondition(EPhysicalCondition.SprintDisabled, false);
+
+                    // Check for active MultiSelect load/unload
+                    if (MultiSelectInterop.IsMultiSelectLoadSerializerActive)
+                    {
+                        // Estado de corrida já foi restaurado acima, apenas retornar
+                        return;
+                    }
+
+                    if (_player.HandsIsEmpty)
+                    {
+                        _player.TrySetLastEquippedWeapon();
+                    }
+                    _player.MovementContext.RemoveStateSpeedLimit(ESpeedLimit.BarbedWire);
                 }
-                _player.MovementContext.RemoveStateSpeedLimit(ESpeedLimit.BarbedWire);
+                finally
+                {
+                    _isRestoringState = false;
+                }
             }
-            _player.MovementContext.SetPhysicalCondition(EPhysicalCondition.SprintDisabled, startAnim);
         }
 
         private void ResetLoading()
