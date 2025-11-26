@@ -333,17 +333,48 @@ namespace JeroManyMods.Patches.ContinuousLoadAmmo.Controllers
                     _player.MovementContext.SetPhysicalCondition(EPhysicalCondition.SprintDisabled, false);
 
                     // Check for active MultiSelect load/unload
-                    if (MultiSelectInterop.IsMultiSelectLoadSerializerActive)
+                    bool isMultiSelectActive = MultiSelectInterop.IsMultiSelectLoadSerializerActive;
+                    
+                    if (isMultiSelectActive)
                     {
-                        // Estado de corrida já foi restaurado acima, apenas retornar
-                        return;
+                        // Se MultiSelect estiver ativo, aguardar um pouco mais antes de restaurar a arma
+                        await Task.Delay(500);
                     }
 
-                    if (_player.HandsIsEmpty)
+                    // SEMPRE tentar restaurar a arma, mesmo quando MultiSelect estiver ativo
+                    // Verificar múltiplas vezes se necessário para garantir que a arma seja restaurada
+                    for (int attempt = 0; attempt < 3; attempt++)
                     {
-                        _player.TrySetLastEquippedWeapon();
+                        if (_player.HandsIsEmpty)
+                        {
+                            _player.TrySetLastEquippedWeapon();
+                            // Aguardar um pouco para verificar se funcionou
+                            await Task.Delay(100);
+                            // Se a arma foi restaurada, sair do loop
+                            if (!_player.HandsIsEmpty)
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            // Se já tem algo nas mãos, não precisa restaurar
+                            break;
+                        }
+                        
+                        // Se não funcionou, tentar novamente após um delay
+                        if (attempt < 2)
+                        {
+                            await Task.Delay(200);
+                        }
                     }
-                    _player.MovementContext.RemoveStateSpeedLimit(ESpeedLimit.BarbedWire);
+
+                    // Remover limite de velocidade apenas se MultiSelect não estiver ativo
+                    // (quando MultiSelect está ativo, ele gerencia isso)
+                    if (!isMultiSelectActive)
+                    {
+                        _player.MovementContext.RemoveStateSpeedLimit(ESpeedLimit.BarbedWire);
+                    }
                 }
                 finally
                 {
