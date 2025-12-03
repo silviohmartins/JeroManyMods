@@ -14,7 +14,7 @@ namespace JeroManyMods.Patches.BushWhacker
 
         private void Awake()
         {
-            _ = GetObjects();
+            GetObjects();
         }
 
         public void StartTask()
@@ -22,7 +22,7 @@ namespace JeroManyMods.Patches.BushWhacker
             _ = ChangeObjects();
         }
 
-        private async Task GetObjects()
+        private void GetObjects()
         {
             MainJeroManyMods.Logger.LogInfo("[BushWhacker] Starting to find objects...");
             Bushes = FindObjectsOfType<ObstacleCollider>().ToList();

@@ -24,7 +24,7 @@ namespace JeroManyMods.Patches.EnvironmentEnjoyer
                 return;
             }
 
-            _ = GetGameObjects();
+            GetGameObjects();
         }
 
         public void StartTask()
@@ -70,7 +70,7 @@ namespace JeroManyMods.Patches.EnvironmentEnjoyer
             }
         }
 
-        public async Task GetGameObjects()
+        public void GetGameObjects()
         {
             if (_gameWorld == null || string.IsNullOrEmpty(_gameWorld.LocationId))
             {

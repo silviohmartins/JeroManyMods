@@ -1,6 +1,4 @@
-﻿
-using System.Threading.Tasks;
-using Comfort.Common;
+﻿using Comfort.Common;
 using EFT;
 using EFT.UI;
 using UnityEngine;
@@ -62,7 +60,7 @@ namespace JeroManyMods
             MainJeroManyMods.Logger.LogInfo("[JeroManyMods] Scripts added successfully.");
         }
 
-        private async Task RunFirstTime()
+        private void RunFirstTime()
         {
             MainJeroManyMods.Logger.LogInfo("[JeroManyMods] Running first time initialization...");
             _environmentEnjoyerScript?.StartTask();
